@@ -196,15 +196,23 @@ $(".card .list-group").sortable({
   helper: "clone",
   activate: function(event) {
     console.log("activate", this);
+    $(this).addClass("dropover");
+    $(".bottom-trash").addClass("bottom-trash-drag");
   },
   deactivate: function(event) {
+    $(this).removeClass("dropover");
+    $(".bottom-trash").removeClass("bottom-trash-drag")
     console.log("deactivate", this);
   },
   over: function(event) {
+    $(event.target).addClass("dropover-active");
+    
     console.log("over", event.target);
   },
   out: function(event) {
-    console.log("out", event.target);
+    $(event.target).removeClass("dropover-active");
+
+       console.log("out", event.target);
   },
   update: function(event) {
   // array to store the task data in
@@ -245,13 +253,16 @@ console.log(tempArr);
     accept: ".card .list-group-item",
     tolerance: "touch",
     drop: function(event, ui) {
+      $(".bottom-trash").removeClass("bottom-trash-activate");
       ui.draggable.remove();
       console.log("drop");
     },
     over: function(event, ui) {
+      $(".bottom-trash").addClass("bottom-trash-activate");
       console.log("over");
     },
     out: function(event, ui) {
+      $(".bottom-trash").removeClass("bottom-trash-activate");
       console.log("out");
     }
    
@@ -283,9 +294,14 @@ console.log(tempArr);
     else if (Math.abs(moment().diff(time, "days")) <= 2) {
       $(taskEl).addClass("list-group-item-warning");
   }
+  console.log(taskEl)
   };
 
 // load tasks for the first time
 loadTasks();
+
+setInterval(function() {
+  // code to execute
+}, (1000 * 60) * 30);
 
 
